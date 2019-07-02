@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>类别添加</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <form role="form" action='add' method="post" onsubmit='return checkUser()'>
+        <div><input type="hidden" name="id"></div>
+        <div class="form-group" id="categoryDiv">
+        <label for="name">类别名称：</label><input class="form-control" type="text" name="categoryname">
+        </div>
+        <div class="form-group"><input class="btn btn-primary" id="loginBtn"  type='submit' value='确定 '/></div>
+    </form>
+    <script src='../js/myajax.js'></script>
+    <script>
+        var isCheckSucess = false;
+        var categoryInput = document.getElementsByName('categoryname')[0];
+        var categoryDiv=document.getElementById('categoryDiv');
+        var span=document.createElement('span');
+        categoryInput.onblur =function(){
+            categoryDiv.appendChild(span);//dom动态在userDiv后面创建span标签
+            // 1. 用户名非空检查
+            if(categoryInput.value==''){
+                isCheckSucess = false;// 检查用户名不能为空，不允许提交
+                span.style.color = 'red';
+                span.innerHTML = '类型名称不能为空'; 
+                return false;
+            }else{
+                isCheckSucess = true;// 检查用户名不存在,允许提交
+                span.innerHTML=''; 
+            }
+        }
+   
+    function checkUser(){
+        return isCheckSucess;
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax示例</title>
+</head>
+<body>
+    <h1>ajax示例</h1>
+    <button id="btn">发送请求</button>
+    <script>
+    var btn=document.getElementById('btn');
+        btn.onclick = function(){
+            // 1. 获取 XmlHttpRequest
+            var xhr = getXHR();
+
+            // 2. 打开连接发送请求
+            xhr.open('get', '/test?username=admin', true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // 请求头部
+            xhr.send();
+
+            // 3. 处理响应
+            xhr.onreadystatechange = function (e) {
+                // 根据就绪码判断响应是否完成
+                if (e.target.readyState === 4) {
+                    // 根据状态码判断成功失败
+                    if (e.target.status === 200) {
+                        console.log(e.target.responseText);
+                        alert('响应内容是 :' + e.target.responseText);
+                    } else {
+                        alert('服务器出错 ' + e.target.stauts);
+                    }
+                }
+            }
+        }
+
+        function getXHR() {
+            if (window.XMLHttpRequest) {
+                return new window.XMLHttpRequest;
+            } else {
+                // 兼容IE浏览器低版本
+                new window.AtiveXObject("Microsoft.XMLHTTP");
+            }
+        }
+        
+    </script>
+</body>
+</html>

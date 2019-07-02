@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>登录</title>  
+    <link rel="stylesheet" href="css/pintuer.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/pintuer.js"></script>  
+</head>
+<body>
+<div class="bg"></div>
+<div class="container">
+    <div class="line bouncein">
+        <div class="xs6 xm4 xs3-move xm4-move">
+            <div style="height:150px;"></div>
+            <div class="media media-y margin-big-bottom">           
+            </div>         
+            <%# <form action="./main" method="post"> %>
+            <div class="panel loginbox">
+                <div class="text-center margin-big padding-big-top"><h1>后台管理中心</h1></div>
+                <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
+                    <div class="form-group">
+                        <div class="field field-icon-right">
+                            <input type="text" class="input input-big" name="user" placeholder="登录账号" data-validate="required:请填写账号" value='<%=user.username%>'/>
+                            <span class="icon icon-user margin-small"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field field-icon-right">
+                            <input type="password" class="input input-big" name="password" placeholder="登录密码" data-validate="required:请填写密码" value='<%=user.password%>'/>
+                            <span class="icon icon-key margin-small"></span>
+                        </div>
+                    </div>
+                     <div class="form-group"><input type="checkbox" name="rmb" id="autoLogin" checked> 
+                        <label for="rmb">记住密码</label></div>
+                <div style="color:red"><%= message %></div>
+                <div id="message" style="color:red"></div>
+                </div>
+                <div style="padding:30px;"><input type="submit" id="loginBtn" class="button button-block bg-main text-big input-big" value="登录"></div>
+                <div style="padding:5px 30px;"><input type="submit" id="regBtn" class="button button-block bg-main text-big input-big" value="注册"></div>
+            </div>
+            <script src="js/myajax.js"></script>      
+            <script>
+            var loginBtn=document.getElementById('loginBtn'),
+                userElement=document.getElementsByName('user')[0],
+                passwordElement=document.getElementsByName('password')[0],
+                autoLoginElement=document.getElementById('autoLogin');
+            loginBtn.onclick=function(){
+                var user = userElement.value;
+                var password = passwordElement.value;
+                var autoLogin =  autoLoginElement.checked;
+                fetch('/loginSubmit',{
+                    method: 'post',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: 'user='+user+'&password='+password+'&autoLogin='+autoLogin
+                }).then(function(res){
+                    if(res.ok){
+                        return res.json();  // 响应内容类型进行转换:  如果响应是json字符串， res.json();  如果响应是纯文本，res.text();
+                    }else{
+                        return Promise.reject('响应出错 :'+res.status +' '+res.statusText);
+                    }
+                }).then(function(data){
+                    if(data.code === -1){
+                        var messageElement=document.getElementById('message');
+                        messageElement.innerHTML=data.error;
+                    }else{
+                        window.location.href = '/main';  // 打开URL页面
+                    }  
+                }).catch(function(err){
+                        console.log(err);
+                });
+
+
+                } 
+                
+        var regElement=document.getElementById('regBtn');
+            regElement.onclick=function(){
+                window.location.href='/register';
+            }
+
+            
+            
+            </script> 
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
